@@ -21,22 +21,21 @@ if(form){
                   textAlign: "center"
                 }})
         }else{
-            /*
+            
             // request result from openAI
             const result = await window.axios.openAI(formData.get("text"));
-            document.getElementById("keywords").innerHTML = result.choices[0].text;
-            */
-            
-            // Get request of SUpa temp debug
-            const aw = await window.axios.supaBase("get");  
-            document.getElementById("keywords").innerHTML = aw[0].output;
+            document.getElementById("keywords").innerHTML = result.choices[0].text.replace(/\n/g, "").replace(/-/g, ",");
 
             let data = {
                 'input': formData.get("text"),
                 "output": document.getElementById("keywords").innerHTML
             }
 
-            await window.axios.supaBase("post",data);
+            await window.axios.supaBase("post",data); 
+            
+            // Get request of SUpa temp debug
+            // const aw = await window.axios.supaBase("get");  
+            // document.getElementById("keywords").innerHTML = aw[0].output;
         }
     }
 }

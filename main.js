@@ -63,43 +63,16 @@ const template = [
     label: 'View',
     submenu: [
       { role: 'reload' },
-      { role: 'forceReload' },
-      { role: 'toggleDevTools' },
-      { type: 'separator' },
-      { role: 'resetZoom' },
       { role: 'zoomIn' },
       { role: 'zoomOut' },
-      { type: 'separator' },
-      { role: 'togglefullscreen' }
+      { label: "Logs", click: showLogs}
     ]
   },
   // { role: 'windowMenu' }
-  // {
-  //   label: 'Window',
-  //   submenu: [
-  //     { role: 'minimize' },
-  //     { role: 'zoom' },
-  //     ...(isMac ? [
-  //       { type: 'separator' },
-  //       { role: 'front' },
-  //       { type: 'separator' },
-  //       { role: 'window' }
-  //     ] : [
-  //       { role: 'close' }
-  //     ])
-  //   ]
-  // },
   {
-    role: 'help',
-    submenu: [
-      {
-        label: 'Learn More',
-        click: async () => {
-          const { shell } = require('electron')
-          await shell.openExternal('https://electronjs.org')
-        }
-      }
-    ]
+    label: 'Authors', click: function(){
+      console.log("Iz a prank!")
+    }
   }
 ]
 
@@ -113,8 +86,11 @@ const createWindow = () => {
       contextIsolation: true,
       preload: path.join(__dirname, "preload.js"),
     },
-  })
- 
+  });
+  
+  const menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
+
   if(isDev){
     win.webContents.openDevTools();
   }
@@ -142,6 +118,27 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 })
+
+//create and run new page
+function showLogs(){
+  const logs = new BrowserWindow({
+    width: 1000,
+    height: 400,
+    alwaysOnTop: true,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: true,
+      preload: path.join(__dirname, "preload.js"),
+    },
+  });
+
+  if(isDev){
+    logs.webContents.openDevTools();
+  }
+
+  logs.setMenuBarVisibility(false)
+  logs.loadFile('./renderer/log.html')
+}
 
 //function for API openAI request
 async function openAI(event,text){
@@ -215,14 +212,24 @@ async function supaBase(event,method,data){
     .catch(function (error) {
       supaBaseResult = error.response.data;
     }) 
-  } else if (method == "patch"){
-    //update
-
-  }else{
+  } else{
     //delete
+    let id = data.id
+    await axios({
+      method: method,
+      url: 'https://rjfhonwqkubdvwexisri.supabase.co/rest/v1/openAIKeyword?id=eq.'+ id,
+      headers:{
+        'apikey': key.SUPABASE_KEY,
+        'Authorization': 'Bearer ' + key.SUPABASE_KEY,
+      },
+    }).then(function (response) {
+      supaBaseResult = response.data;
+    })
+    .catch(function (error) {
+      supaBaseResult = error.response.data;
+    }) 
   }
   
-
   return supaBaseResult;
 }
 

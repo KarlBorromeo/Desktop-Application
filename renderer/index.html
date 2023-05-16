@@ -15,16 +15,18 @@
     <title>Keyword Extractor</title>
   </head>
 
-  <body class="bg-dark">
-    <div class="container mt-5 p-3 mb-2 bg-primary-subtle text-emphasis-primary">
-        <h1 class="" >Keywords Extraction</h1>
+  <body class="bg-success p-2 text-dark bg-opacity-10">
+    <div class="container mt-3 pb-5 bg-success p-2 text-white bg-opacity-75 ">
+        <h1 class="text-center fw-bold text-black" >Keywords Extraction</h1>
         <form id="form">
-          <label class=""for="text">Enter Sentence</label><br>
-          <textarea class="form-control" type="text" name="text" rows="3"></textarea><br>
-          <input class="btn btn-primary mt-1" type="submit", value="SUBMIT">
+          <label class="fw-medium"for="text">Enter Sentence</label><br>
+          <textarea class="form-control" type="text" name="text" rows="5"></textarea><br>
+          <div class="d-grid gap-2 col-6 mx-auto">
+            <button class="btn btn-primary mt-0" type="submit">Extract</button></div>
+          
         </form>
-            <label for="keywords mt-3">Extracted Keywords</label><br>
-            <textarea class="form-control" id="keywords" rows="3" name="keywords" readonly></textarea>
+            <label class = "fw-medium" for="keywords mt-3">Extracted Keywords</label><br>
+            <textarea class="form-control" id="keywords" rows="5" name="keywords" readonly></textarea>
         <script src="./js/render.js"></script>    
     </div>
     <script src="./js/bootstrap/bootstrap.bundle.min.js"></script>
