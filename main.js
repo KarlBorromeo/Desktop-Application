@@ -2,7 +2,7 @@ const { app, BrowserWindow, Menu, ipcMain } = require('electron')
 const path = require("path")
 const axios = require('axios')
 const dotenv = require('dotenv').config()
-const isDev = true;
+const isDev = false;
 const isMac = process.platform === 'darwin'
 
 
@@ -216,7 +216,7 @@ async function supaBase(event,method,data){
     //delete
     let id = data.id
     await axios({
-      method: method,
+      method: "delete",
       url: 'https://rjfhonwqkubdvwexisri.supabase.co/rest/v1/openAIKeyword?id=eq.'+ id,
       headers:{
         'apikey': key.SUPABASE_KEY,

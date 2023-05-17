@@ -7,19 +7,8 @@ async function getPrompts () {
         "id": 13
     }
     // await window.axios.supaBase('delete',data)
-    const response = await window.axios.supaBase("get"); 
+    var response = await window.axios.supaBase("get"); 
     const myTable = document.getElementById('myBody'); 
-    const sample = {
-        "a": 1,
-        "b": 1,
-        "c": "hesa",
-        "ad": 1,
-        "asa": "fdsafds",
-    }
-    function del(id){
-        console.log(id);
-        // await window.axios.supaBase('delete','',id)
-    }
 
     Object.keys(response).forEach(key => {
         const newRow = document.createElement('tr');
@@ -34,20 +23,23 @@ async function getPrompts () {
         newCell3.textContent = response[key].output
         newCell4.textContent = response[key].updated_at
         button.textContent = "Delete"
-        button.style.color = 'red';
+        button.style.color = 'red'
         newCell5.append(button)
         
         const data = {"id":response[key].id}
-        button.addEventListener('click',function() {
+        button.addEventListener('click',async function(e) {
             // Your code here
-            console.log(data.id);
-            window.axios.supaBase('delete',data)
-            location.reload()
+            // console.log(data.id);
+            const res = await window.axios.supaBase('delete',data)
+            // location.reload()
+            // history.go(0);
+            newRow.remove();
+            // getPrompts();   
+            // location.reload()
             // Add your desired functionality here
           });
 
         newRow.append(newCell1,newCell2,newCell3,newCell4,newCell5)
         myTable.appendChild(newRow)
-
     })
 }
